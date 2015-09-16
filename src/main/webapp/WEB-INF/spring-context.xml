@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
     http://www.springframework.org/schema/context
@@ -14,9 +12,11 @@
     http://www.springframework.org/schema/task/spring-task-4.1.xsd
     ">
 	<context:component-scan base-package="com.euromoby.socialize.core" />
-	
-	<context:property-placeholder location="classpath:config.properties"/>
-	
+
+	<context:property-placeholder location="classpath:config.properties" />
+
+	<task:annotation-driven />
+
 	<bean id="config" class="com.euromoby.socialize.core.Config">
 		<property name="taskPoolSize" value="${task.pool}" />
 		<property name="clientTimeout" value="${http.timeout}" />
@@ -28,15 +28,35 @@
 		<property name="vkSecureKey" value="${vk.secure.key}" />
 	</bean>
 
-    <tx:annotation-driven proxy-target-class="true" transaction-manager="transactionManager" />
- 
-    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource" />
-    </bean>
+	<tx:annotation-driven proxy-target-class="true"
+		transaction-manager="transactionManager" />
 
-	<task:annotation-driven/>
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 
-	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="annotatedClasses">
+			<list>
+				<value>com.euromoby.socialize.core.model.UserAccount</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<!-- prop key="hibernate.current_session_context_class">thread</prop -->
+				<prop key="hibernate.show_sql">false</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
 		<!-- access -->
 		<property name="driverClass" value="${db.driver}" />
 		<property name="jdbcUrl" value="${db.url}" />

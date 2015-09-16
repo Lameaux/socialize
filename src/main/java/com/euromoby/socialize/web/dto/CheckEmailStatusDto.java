@@ -1,8 +1,10 @@
-package com.euromoby.socialize.core.model;
+package com.euromoby.socialize.web.dto;
 
-public class CheckEmailStatus {
+public class CheckEmailStatusDto {
 
 	private String email;
+
+	private boolean exists;
 
 	public String getEmail() {
 		return email;
@@ -11,8 +13,6 @@ public class CheckEmailStatus {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	private boolean exists;
 
 	public boolean isExists() {
 		return exists;

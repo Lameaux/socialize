@@ -1,14 +1,14 @@
 CREATE DATABASE socialize CHARACTER SET utf8 COLLATE utf8_general_ci;
 
--- DROP TABLE IF EXISTS account;
+-- DROP TABLE IF EXISTS user_account;
 -- DROP TABLE IF EXISTS website;
 -- DROP TABLE IF EXISTS auth_user;
 
-CREATE TABLE IF NOT EXISTS account (
+CREATE TABLE IF NOT EXISTS user_account (
 	id INT auto_increment NOT NULL PRIMARY KEY,
 	email VARCHAR(255),
-	password_hash VARCHAR(255),
-	salt VARCHAR(255)
+	login VARCHAR(255),
+	password_hash VARCHAR(255)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS website (
