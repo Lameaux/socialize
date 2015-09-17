@@ -1,5 +1,7 @@
 package com.euromoby.socialize.web.transform;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Component;
 
 import com.euromoby.socialize.core.model.UserAccount;
@@ -13,6 +15,11 @@ public class UserAccountTransformer {
 		userAccount.setEmail(registerUser.getEmail());
 		userAccount.setLogin(registerUser.getLogin());
 		userAccount.setPasswordHash(PasswordUtils.generatePasswordHash(registerUser.getPassword()));
+		userAccount.setUuid(UUID.randomUUID().toString());
+		userAccount.setCreated(System.currentTimeMillis());
+		userAccount.setUpdated(0);
+		userAccount.setLastLogin(0);
+		userAccount.setActive(false);
 		return userAccount;
 	}
 	

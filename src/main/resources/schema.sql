@@ -8,10 +8,17 @@ CREATE TABLE IF NOT EXISTS user_account (
 	id INT auto_increment NOT NULL PRIMARY KEY,
 	email VARCHAR(255),
 	login VARCHAR(255),
-	password_hash VARCHAR(255)
+	password_hash VARCHAR(255),
+	uuid VARCHAR(36),
+	created BIGINT DEFAULT 0,
+	updated BIGINT DEFAULT 0,
+	last_login BIGINT DEFAULT 0,
+	active TINYINT DEFAULT 0
 ) ENGINE=InnoDB;
 CREATE UNIQUE INDEX user_account_email ON user_account(email);
 CREATE UNIQUE INDEX user_account_login ON user_account(login);
+CREATE UNIQUE INDEX user_account_uuid ON user_account(uuid);
+
 
 CREATE TABLE IF NOT EXISTS mail_new (
 	id INT auto_increment NOT NULL PRIMARY KEY,
@@ -19,7 +26,7 @@ CREATE TABLE IF NOT EXISTS mail_new (
 	recipient VARCHAR(255),
 	subject VARCHAR(255),
 	content TEXT,
-	created BIGINT default 0
+	created BIGINT DEFAULT 0
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS mail_sent (
@@ -28,7 +35,7 @@ CREATE TABLE IF NOT EXISTS mail_sent (
 	recipient VARCHAR(255),
 	subject VARCHAR(255),
 	content TEXT,
-	sent BIGINT default 0
+	sent BIGINT DEFAULT 0
 ) ENGINE=InnoDB;
 
 -- --------------------------------------------------------------

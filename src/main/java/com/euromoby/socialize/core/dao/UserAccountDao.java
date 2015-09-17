@@ -14,8 +14,14 @@ public class UserAccountDao {
 	private SessionFactory sessionFactory;
 	 
 	public void save(UserAccount userAccount) {
+		userAccount.setCreated(System.currentTimeMillis());
 		sessionFactory.getCurrentSession().save(userAccount);
 	}
+
+	public void update(UserAccount userAccount) {
+		userAccount.setUpdated(System.currentTimeMillis());
+		sessionFactory.getCurrentSession().update(userAccount);
+	}	
 	
 	public UserAccount findByEmail(String email) {
 		Query query = sessionFactory.getCurrentSession().createQuery("from UserAccount where email = :email");
@@ -28,4 +34,11 @@ public class UserAccountDao {
 		query.setString("login", login);
 		return (UserAccount) query.uniqueResult();		
 	}	
+
+	public UserAccount findByUuid(String uuid) {
+		Query query = sessionFactory.getCurrentSession().createQuery("from UserAccount where uuid = :uuid");
+		query.setString("uuid", uuid);
+		return (UserAccount) query.uniqueResult();		
+	}
+	
 }

@@ -27,5 +27,15 @@ public class UserService {
 	public void save(UserAccount userAccount) {
 		userAccountDao.save(userAccount);
 	}
+
+	@Transactional
+	public void update(UserAccount userAccount) {
+		userAccountDao.update(userAccount);
+	}	
+	
+	@Transactional(readOnly=true)	
+	public UserAccount findByUuid(String uuid) {
+		return userAccountDao.findByUuid(uuid);
+	}
 	
 }

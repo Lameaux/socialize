@@ -53,6 +53,19 @@ public class RegisterController {
 		return "register";
 	}
 
+	@RequestMapping(value = "/register/confirm-email/{uuid}", method = RequestMethod.GET)
+	public String confirmEmail(ModelMap model, @PathVariable("uuid") String uuid) {
+		UserAccount userAccount = userService.findByUuid(uuid);
+		if (userAccount == null) {
+			return "redirect:/";
+		}
+		if (!userAccount.isActive()) {
+			userAccount.setActive(true);
+			userService.update(userAccount);
+		}
+		return "empty";
+	}
+	
 	@RequestMapping(value = "/register/check-email/{email}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
 	public @ResponseBody
 	CheckEmailStatusDto registerCheckEmail(ModelMap model, @PathVariable("email") String email) {
@@ -102,5 +115,6 @@ public class RegisterController {
 		status.setError(error);
 		return status;
 	}
+	
 	
 }

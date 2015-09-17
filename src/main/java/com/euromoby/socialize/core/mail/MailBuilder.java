@@ -27,7 +27,9 @@ public class MailBuilder {
 
 		mailNew.setSubject("Confirm your email address");
 
-		String content = "Hello " + userAccount.getLogin();
+		String content = "Hi " + userAccount.getLogin() + ",\r\n";
+		content += "Your code: /register/confirm-email/" + userAccount.getUuid() + "\r\n";
+		content += "\r\nRegards,\r\nSocialize";
 		mailNew.setContent(content);
 		
 		return mailNew;
