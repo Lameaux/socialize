@@ -28,6 +28,21 @@
 		<property name="vkSecureKey" value="${vk.secure.key}" />
 	</bean>
 
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="587" />
+		<property name="username" value="${gmail.smtp.username}" />
+		<property name="password" value="${gmail.smtp.password}" />
+			
+		<property name="javaMailProperties">
+		   <props>
+	       	      <prop key="mail.smtp.auth">true</prop>
+	       	      <prop key="mail.smtp.starttls.enable">true</prop>
+	       	   </props>
+		</property>
+	</bean>	
+
+
 	<tx:annotation-driven proxy-target-class="true"
 		transaction-manager="transactionManager" />
 
@@ -35,8 +50,6 @@
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-
-
 
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">

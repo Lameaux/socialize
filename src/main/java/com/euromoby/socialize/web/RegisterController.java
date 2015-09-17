@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.euromoby.socialize.core.model.UserAccount;
+import com.euromoby.socialize.core.service.SendMailService;
 import com.euromoby.socialize.core.service.UserService;
 import com.euromoby.socialize.web.dto.CheckEmailStatusDto;
 import com.euromoby.socialize.web.dto.CheckLoginStatusDto;
@@ -35,6 +36,9 @@ public class RegisterController {
 
 	@Autowired
 	private UserAccountTransformer userAccountTransformer;
+	
+	@Autowired
+	private SendMailService sendMailService;
 
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public String register(ModelMap model) {
@@ -90,4 +94,12 @@ public class RegisterController {
 		return status;
 	}
 
+	@RequestMapping(value = "/sendmail", method = RequestMethod.GET)
+	public String sendMail(ModelMap model) {
+		
+		sendMailService.sendTestMail();
+		
+		return "empty";
+	}	
+	
 }

@@ -11,6 +11,8 @@ CREATE TABLE IF NOT EXISTS user_account (
 	password_hash VARCHAR(255)
 ) ENGINE=InnoDB;
 
+-- --------------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS website (
 	id INT auto_increment NOT NULL PRIMARY KEY,
 	account_id INT NOT NULL,
