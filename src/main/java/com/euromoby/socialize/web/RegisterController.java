@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.euromoby.socialize.core.mail.MailBuilder;
+import com.euromoby.socialize.core.model.MailNew;
 import com.euromoby.socialize.core.model.UserAccount;
-import com.euromoby.socialize.core.service.SendMailService;
+import com.euromoby.socialize.core.service.MailService;
 import com.euromoby.socialize.core.service.UserService;
 import com.euromoby.socialize.web.dto.CheckEmailStatusDto;
 import com.euromoby.socialize.web.dto.CheckLoginStatusDto;
@@ -38,7 +40,10 @@ public class RegisterController {
 	private UserAccountTransformer userAccountTransformer;
 	
 	@Autowired
-	private SendMailService sendMailService;
+	private MailService mailService;
+	
+	@Autowired
+	private MailBuilder mailBuilder;
 
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public String register(ModelMap model) {
@@ -88,18 +93,14 @@ public class RegisterController {
 		if (!error) {
 			UserAccount userAccount = userAccountTransformer.newUserAccount(user);
 			userService.save(userAccount);
+			
+			MailNew emailConfirmation = mailBuilder.emailConfirmation(userAccount);
+			mailService.sendMail(emailConfirmation);
+			
 			status.setId(userAccount.getId());
 		}
 		status.setError(error);
 		return status;
 	}
-
-	@RequestMapping(value = "/sendmail", method = RequestMethod.GET)
-	public String sendMail(ModelMap model) {
-		
-		sendMailService.sendTestMail();
-		
-		return "empty";
-	}	
 	
 }

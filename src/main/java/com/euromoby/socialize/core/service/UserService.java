@@ -15,12 +15,12 @@ public class UserService {
 	
 	@Transactional(readOnly=true)
 	public boolean emailExists(String email) {
-		return "ss@ami.cz".equals(email);
+		return userAccountDao.findByEmail(email) != null;
 	}
 
 	@Transactional(readOnly=true)
 	public boolean loginExists(String login) {
-		return "lameaux".equals(login);
+		return userAccountDao.findByLogin(login) != null;
 	}	
 	
 	@Transactional

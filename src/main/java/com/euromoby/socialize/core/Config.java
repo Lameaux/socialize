@@ -17,6 +17,9 @@ public class Config {
 	private String vkAppId;
 	private String vkSecureKey;
 
+	private String mailSenderName;
+	private String mailSenderAddress;
+
 	public int getClientTimeout() {
 		return clientTimeout;
 	}
@@ -87,6 +90,22 @@ public class Config {
 
 	public void setVkSecureKey(String vkSecureKey) {
 		this.vkSecureKey = vkSecureKey;
+	}
+
+	public String getMailSenderName() {
+		return mailSenderName;
+	}
+
+	public void setMailSenderName(String mailSenderName) {
+		this.mailSenderName = mailSenderName;
+	}
+
+	public String getMailSenderAddress() {
+		return mailSenderAddress;
+	}
+
+	public void setMailSenderAddress(String mailSenderAddress) {
+		this.mailSenderAddress = mailSenderAddress;
 	}
 
 }
