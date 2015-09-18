@@ -6,6 +6,9 @@ public class Config {
 
 	private String httpUserAgent = DEFAULT_HTTP_USERAGENT;
 
+	private String appUrl;
+	private String appTitle;
+	
 	private int clientTimeout;
 	private String proxyHost;
 	private int proxyPort;
@@ -19,6 +22,24 @@ public class Config {
 
 	private String mailSenderName;
 	private String mailSenderAddress;
+
+	
+	
+	public String getAppUrl() {
+		return appUrl;
+	}
+
+	public void setAppUrl(String appUrl) {
+		this.appUrl = appUrl;
+	}
+
+	public String getAppTitle() {
+		return appTitle;
+	}
+
+	public void setAppTitle(String appTitle) {
+		this.appTitle = appTitle;
+	}
 
 	public int getClientTimeout() {
 		return clientTimeout;

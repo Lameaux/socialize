@@ -29,12 +29,6 @@ public class UserAccountDao {
 		return (UserAccount) query.uniqueResult();
 	}
 	
-	public UserAccount findByLogin(String login) {
-		Query query = sessionFactory.getCurrentSession().createQuery("from UserAccount where login = :login");
-		query.setString("login", login);
-		return (UserAccount) query.uniqueResult();		
-	}	
-
 	public UserAccount findByUuid(String uuid) {
 		Query query = sessionFactory.getCurrentSession().createQuery("from UserAccount where uuid = :uuid");
 		query.setString("uuid", uuid);

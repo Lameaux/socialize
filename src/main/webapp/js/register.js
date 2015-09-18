@@ -15,14 +15,15 @@ registerServices.factory('RegisterUser', [ '$resource', function($resource) {
 
 var app = angular.module('app', ['ngRoute', 'registerServices']);
 
-app.controller('RegisterController', [ '$scope', 'RegisterUser', function($scope, RegisterUser) {
+app.controller('RegisterController', [ '$scope', '$window', 'RegisterUser', function($scope, $window, RegisterUser) {
 	$scope.user = {};
-
+	
 	$scope.register = function() {
-		
 		if ($scope.form.$valid) {
 			var registerUser = new RegisterUser($scope.user);
-			registerUser.$save();
+			registerUser.$save(function(){
+				$window.location.href = '/registered';
+			});
 		}
 	};
 
@@ -70,28 +71,3 @@ app.directive('uniqueemail',
 			};
 		}]);
 
-app.directive('uniquelogin',
-		['CheckLogin', '$q', function(CheckLogin, $q) {
-			return {
-				require : 'ngModel',
-				link : function(scope, elm, attrs, ctrl) {
-					ctrl.$asyncValidators.uniquelogin = function(modelValue, viewValue) {
-						if (ctrl.$isEmpty(modelValue)) {
-							// consider empty model valid
-							return $q.when();
-						}
-						var def = $q.defer();
-						CheckLogin.get({login : modelValue}, function(data) {
-							if (data.exists) {
-								def.reject();	
-							} else {
-								def.resolve();
-							}
-						}, function(){
-							def.resolve();
-						});
-						return def.promise;
-					};
-				}
-			};
-		}]);

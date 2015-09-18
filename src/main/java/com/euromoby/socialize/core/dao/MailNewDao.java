@@ -1,5 +1,7 @@
 package com.euromoby.socialize.core.dao;
 
+import java.util.List;
+
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -15,4 +17,12 @@ public class MailNewDao {
 		sessionFactory.getCurrentSession().save(mailNew);
 	}
 	
+	public void delete(MailNew mailNew) {
+		sessionFactory.getCurrentSession().delete(mailNew);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<MailNew> findAll() {
+		return sessionFactory.getCurrentSession().createQuery("from MailNew order by id desc").list();
+	}
 }

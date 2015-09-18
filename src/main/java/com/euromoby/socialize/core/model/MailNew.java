@@ -16,9 +16,6 @@ public class MailNew {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(name = "sender")
-	private String sender;
-
 	@Column(name = "recipient")
 	private String recipient;
 
@@ -37,14 +34,6 @@ public class MailNew {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public String getSender() {
-		return sender;
-	}
-
-	public void setSender(String sender) {
-		this.sender = sender;
 	}
 
 	public String getRecipient() {

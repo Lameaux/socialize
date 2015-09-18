@@ -1,6 +1,5 @@
 package com.euromoby.socialize.web;
 
-import org.apache.velocity.tools.generic.EscapeTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -15,18 +14,20 @@ public class WelcomeController {
 	
     @RequestMapping("/")
     public String welcome(ModelMap model) {
-    	
-    	model.put("session", session);
-		model.put("escape", new EscapeTool());
     	model.put("pageTitle", "Welcome");
         return "welcome";
     }	
  
 	@RequestMapping(value = "/error", method = RequestMethod.GET)
 	public String error(ModelMap model) {
-    	model.put("session", session);
     	model.put("pageTitle", "Error");
 		return "error";
 	}    
+
+	@RequestMapping(value = "/test", method = RequestMethod.GET)
+	public String test(ModelMap model) throws Exception {
+    	model.put("pageTitle", "Test");		
+		return "empty";
+	}	
 	
 }

@@ -17,11 +17,6 @@ public class UserService {
 	public boolean emailExists(String email) {
 		return userAccountDao.findByEmail(email) != null;
 	}
-
-	@Transactional(readOnly=true)
-	public boolean loginExists(String login) {
-		return userAccountDao.findByLogin(login) != null;
-	}	
 	
 	@Transactional
 	public void save(UserAccount userAccount) {

@@ -2,8 +2,6 @@ package com.euromoby.socialize.core.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -13,11 +11,7 @@ public class MailSent {
 
 	@Id
 	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-
-	@Column(name = "sender")
-	private String sender;
 
 	@Column(name = "recipient")
 	private String recipient;
@@ -37,14 +31,6 @@ public class MailSent {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public String getSender() {
-		return sender;
-	}
-
-	public void setSender(String sender) {
-		this.sender = sender;
 	}
 
 	public String getRecipient() {

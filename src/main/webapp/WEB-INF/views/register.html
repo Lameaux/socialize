@@ -1,42 +1,53 @@
-<script src="/js/registration.js"></script>
-<h1>Create an account</h1>
+<script src="/js/register.js"></script>
+<h1>Sign Up</h1>
 <div ng-controller="RegisterController">
-	<form name="form" class="css-form" method="post" novalidate>
-		<label for="email">Email:</label> 
-		<input type="email" name="email" id="email" ng-model="user.email" ng-model-options="{ updateOn: 'blur' }" required uniqueemail>
-		<span ng-show="form.$submitted || form.email.$touched">
-	      <span ng-show="form.email.$error.required">Please enter email.</span>
-	      <span ng-show="form.email.$error.email">Email is not a valid.</span>
-	      <span ng-show="form.email.$error.uniqueemail">This email is already registered.</span>
-	      <span ng-show="form.email.$valid">OK</span>
-	    </span>
-	    <br>		 
-		<label for="login">Login:</label> 
-		<input type="text" name="login" id="login" ng-model="user.login" ng-model-options="{ updateOn: 'blur' }" required minlength="3" uniquelogin>
+	<form class="form" role="form" name="form" method="post" novalidate>
+	    <div class="form-group has-feedback">		 
+			<label for="login">Name</label> 
+			<input placeholder="John Smith" class="form-control" type="text" name="login" id="login" ng-model="user.login" ng-model-options="{ updateOn: 'blur' }" required minlength="3">
+			<i class="glyphicon glyphicon-ok form-control-feedback" ng-show="form.login.$valid"></i>
+	    </div>
 		<span ng-show="form.$submitted || form.login.$touched">
-	      <span ng-show="form.login.$error.required">Please enter login.</span>
-	      <span ng-show="form.login.$error.minlength">Login should be at least 3 characters.</span>
-	      <span ng-show="form.login.$error.uniquelogin">Login is already registered.</span>
-	      <span ng-show="form.login.$valid">OK</span>
-	    </span>
-	    <br>
-		<label for="password">Password:</label>
-		<input type="password" name="password" id="password" ng-model="user.password" ng-model-options="{ updateOn: 'blur' }" required minlength="6"> 
+			<div class="alert alert-danger ng-cloak" ng-show="form.login.$error.required"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Please enter your name.</div>
+			<div class="alert alert-danger ng-cloak" ng-show="form.login.$error.minlength"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Name should be at least 3 characters.</div>
+		</span>	
+		<div class="form-group has-feedback">
+			<label for="email">Email (required, but never shown)</label>
+			<input placeholder="john@example.com" class="form-control" type="email" name="email" id="email" ng-model="user.email" ng-model-options="{ updateOn: 'blur' }" required uniqueemail>
+			<i class="glyphicon glyphicon-ok form-control-feedback" ng-show="form.email.$valid"></i>
+	    </div>
+		<span ng-show="form.$submitted || form.email.$touched">
+			<div class="alert alert-danger ng-cloak" ng-show="form.email.$error.required"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Please enter email.</div>
+			<div class="alert alert-danger ng-cloak" ng-show="form.email.$error.email"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Email is not valid.</div>
+			<div class="alert alert-danger ng-cloak" ng-show="form.email.$error.uniqueemail"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> This email is already in use. Do you already have an account?</div>
+		</span>
+	    <div class="form-group has-feedback">
+			<label for="password">Password</label>
+			<input class="form-control" type="password" name="password" id="password" ng-model="user.password" ng-model-options="{ updateOn: 'blur' }" required minlength="6"> 
+			<i class="glyphicon glyphicon-ok form-control-feedback" ng-show="form.password.$valid"></i>
+		</div>
 		<span ng-show="form.$submitted || form.password.$touched">
-	      <span ng-show="form.password.$error.required">Please enter password.</span>
-	      <span ng-show="form.password.$error.minlength">Password should be at least 6 characters.</span>
-	      <span ng-show="form.password.$valid">OK</span>
-	    </span>
-		<br>
-		<label for="password2">Retype Password:</label> 
-		<input type="password" name="password2" id="password2" ng-model="user.password2" ng-model-options="{ updateOn: 'blur' }" required repeatpassword>
+			<div class="alert alert-danger ng-cloak" ng-show="form.password.$error.required"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Please enter password.</div>
+			<div class="alert alert-danger ng-cloak" ng-show="form.password.$error.minlength"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Password should be at least 6 characters.</div>
+		</span>
+		<div class="form-group has-feedback">
+			<label for="password2">Confirm password</label> 
+			<input class="form-control" type="password" name="password2" id="password2" ng-model="user.password2" ng-model-options="{ updateOn: 'blur' }" required repeatpassword>
+			<i class="glyphicon glyphicon-ok form-control-feedback" ng-show="form.password2.$valid"></i>
+		</div>
 		<span ng-show="form.$submitted || form.password2.$touched">
-	      <span ng-show="form.password2.$error.required">Please retype password.</span>
-	      <span ng-show="form.password2.$error.repeatpassword">Password is not the same.</span>
-	      <span ng-show="form.password2.$valid">OK</span>
-	    </span>
-		<br>
-		<button type="submit" ng-click="register()">Register</button>
+			<div class="alert alert-danger ng-cloak"  ng-show="form.password2.$error.required"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Please retype password.</div>
+			<div class="alert alert-danger ng-cloak"  ng-show="form.password2.$error.repeatpassword"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Password is not the same.</div>
+		</span>
+		
+		<p>
+			By signing up, you agree to Rules, Terms of Service, and Privacy Policy.		
+		</p>
+		
+		<button class="btn btn-primary" type="submit" ng-click="register()">Sign Up</button>
+		<p class="pull-right">
+			Already have an account? <a class="btn btn-default" href="/login">Log in</a>
+		</p>
 	</form>
 </div>
 

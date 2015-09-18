@@ -4,79 +4,10 @@ body {
   padding-bottom: 20px;
 }
 
-/* Everything but the jumbotron gets side spacing for mobile first views */
-.header,
-.marketing,
-.footer {
-  padding-right: 15px;
-  padding-left: 15px;
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
 }
 
-/* Custom page header */
-.header {
-  padding-bottom: 20px;
-  border-bottom: 1px solid #e5e5e5;
-}
-/* Make the masthead heading the same height as the navigation */
-.header h3 {
-  margin-top: 0;
-  margin-bottom: 0;
-  line-height: 40px;
-}
-
-/* Custom page footer */
-.footer {
-  padding-top: 19px;
-  color: #777;
-  border-top: 1px solid #e5e5e5;
-}
-
-.feed-edit, .feed-delete {
-	cursor: pointer;
-}
-
-input.input-feed-url {
-	width: 350px;
-}
-
-.app-content {
-	margin: 20px 0;	
-}
-
-.container .jumbotron {
-	padding-top: 10px !important;
-	padding-bottom: 20px !important;	
-}
-
-.jumbotron {
-  text-align: center;
-  
-  border-bottom: 1px solid #e5e5e5;
-  background-color: #fff; /* #FFEBF5; */
-  
-  background-image: url(/img/cloud.jpg);
-  background-size: cover;
-  
-}
-
-.jumbotron h1 {
-	color: #FFEBF5;
-}
-
-.jumbotron .btn {
-  padding: 14px 24px;
-  font-size: 21px;
-  margin: 20px;
-}
-
-#sign-in-btn {
-  color: #fff;
-  background-color: #5cb85c;
-  border-color: #4cae4c;	
-}
-
-#sign-in-btn:hover {
-  color: #fff;
-  background-color: #449d44;
-  border-color: #398439;
+form .alert {
+	padding: 5px 10px;
 }

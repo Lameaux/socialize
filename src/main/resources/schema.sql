@@ -16,13 +16,11 @@ CREATE TABLE IF NOT EXISTS user_account (
 	active TINYINT DEFAULT 0
 ) ENGINE=InnoDB;
 CREATE UNIQUE INDEX user_account_email ON user_account(email);
-CREATE UNIQUE INDEX user_account_login ON user_account(login);
 CREATE UNIQUE INDEX user_account_uuid ON user_account(uuid);
 
 
 CREATE TABLE IF NOT EXISTS mail_new (
 	id INT auto_increment NOT NULL PRIMARY KEY,
-	sender VARCHAR(255),
 	recipient VARCHAR(255),
 	subject VARCHAR(255),
 	content TEXT,
@@ -31,7 +29,6 @@ CREATE TABLE IF NOT EXISTS mail_new (
 
 CREATE TABLE IF NOT EXISTS mail_sent (
 	id INT NOT NULL PRIMARY KEY,
-	sender VARCHAR(255),
 	recipient VARCHAR(255),
 	subject VARCHAR(255),
 	content TEXT,

@@ -26,8 +26,10 @@
 		<property name="twitterSecret" value="${twitter.secret}" />
 		<property name="vkAppId" value="${vk.app.id}" />
 		<property name="vkSecureKey" value="${vk.secure.key}" />
-		<property name="mailSenderName" value="${mail.smtp.sender}" />
-		<property name="mailSenderAddress" value="${mail.smtp.username}" />
+		<property name="appTitle" value="${app.title}" />
+		<property name="appUrl" value="${app.url}" />
+		<property name="mailSenderName" value="${mail.sender.name}" />
+		<property name="mailSenderAddress" value="${mail.sender.address}" />
 	</bean>
 
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
