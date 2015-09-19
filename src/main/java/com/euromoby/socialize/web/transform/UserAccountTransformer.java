@@ -6,14 +6,14 @@ import org.springframework.stereotype.Component;
 
 import com.euromoby.socialize.core.model.UserAccount;
 import com.euromoby.socialize.core.utils.PasswordUtils;
-import com.euromoby.socialize.web.dto.RegisterUserDto;
+import com.euromoby.socialize.web.dto.SignupDto;
 
 @Component
 public class UserAccountTransformer {
-	public UserAccount newUserAccount(RegisterUserDto registerUser) {
+	public UserAccount newUserAccount(SignupDto registerUser) {
 		UserAccount userAccount = new UserAccount();
 		userAccount.setEmail(registerUser.getEmail());
-		userAccount.setLogin(registerUser.getLogin());
+		userAccount.setDisplayName(registerUser.getDisplayName());
 		userAccount.setPasswordHash(PasswordUtils.generatePasswordHash(registerUser.getPassword()));
 		userAccount.setUuid(UUID.randomUUID().toString());
 		userAccount.setCreated(System.currentTimeMillis());

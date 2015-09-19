@@ -55,7 +55,7 @@ public class MailCreator {
 		mailNew.setSubject("Confirm your email address");
 
 		Map<String, String> map = new HashMap<>();
-		map.put("NAME", userAccount.getLogin());
+		map.put("NAME", userAccount.getDisplayName());
 		map.put("UUID", userAccount.getUuid());
 		map.put("APP_TITLE", config.getAppTitle());
 		map.put("APP_URL", config.getAppUrl());

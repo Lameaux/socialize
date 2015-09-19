@@ -1,19 +1,19 @@
 package com.euromoby.socialize.web.dto;
 
 
-public class RegisterUserStatusDto {
+public class SignupStatusDto {
 
-	private RegisterUserDto user;
+	private SignupDto user;
 
 	private Integer id;
 
 	private boolean error;
 
-	public RegisterUserDto getUser() {
+	public SignupDto getUser() {
 		return user;
 	}
 
-	public void setUser(RegisterUserDto user) {
+	public void setUser(SignupDto user) {
 		this.user = user;
 	}
 

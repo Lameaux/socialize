@@ -21,8 +21,8 @@ public class UserAccount {
 	@Column(name = "email")
 	private String email;
 
-	@Column(name = "login")
-	private String login;
+	@Column(name = "display_name")
+	private String displayName;
 
 	@Column(name = "password_hash")
 	private String passwordHash;
@@ -59,12 +59,12 @@ public class UserAccount {
 		this.email = email;
 	}
 
-	public String getLogin() {
-		return login;
+	public String getDisplayName() {
+		return displayName;
 	}
 
-	public void setLogin(String login) {
-		this.login = login;
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
 	}
 
 	public String getPasswordHash() {

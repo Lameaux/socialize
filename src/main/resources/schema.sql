@@ -7,7 +7,7 @@ CREATE DATABASE socialize CHARACTER SET utf8 COLLATE utf8_general_ci;
 CREATE TABLE IF NOT EXISTS user_account (
 	id INT auto_increment NOT NULL PRIMARY KEY,
 	email VARCHAR(255),
-	login VARCHAR(255),
+	display_name VARCHAR(255),
 	password_hash VARCHAR(255),
 	uuid VARCHAR(36),
 	created BIGINT DEFAULT 0,

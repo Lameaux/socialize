@@ -1,27 +1,23 @@
-var registerServices = angular.module('registerServices', ['ngResource']);
+var signupServices = angular.module('signupServices', ['ngResource']);
 
-registerServices.factory('CheckEmail', [ '$resource', function($resource) {
-	return $resource('/register/check-email/:email');
+signupServices.factory('CheckEmail', [ '$resource', function($resource) {
+	return $resource('/check-email/:email');
 } ]);
 
-registerServices.factory('CheckLogin', [ '$resource', function($resource) {
-	return $resource('/register/check-login/:login');
-} ]);
-
-registerServices.factory('RegisterUser', [ '$resource', function($resource) {
-	return $resource('/register/user');
+signupServices.factory('Signup', [ '$resource', function($resource) {
+	return $resource('/signup');
 } ]);
 
 
-var app = angular.module('app', ['ngRoute', 'registerServices']);
+var app = angular.module('app', ['ngRoute', 'signupServices']);
 
-app.controller('RegisterController', [ '$scope', '$window', 'RegisterUser', function($scope, $window, RegisterUser) {
+app.controller('SignupController', [ '$scope', '$window', 'Signup', function($scope, $window, Signup) {
 	$scope.user = {};
 	
 	$scope.register = function() {
 		if ($scope.form.$valid) {
-			var registerUser = new RegisterUser($scope.user);
-			registerUser.$save(function(){
+			var signup = new Signup($scope.user);
+			signup.$save(function(){
 				$window.location.href = '/registered';
 			});
 		}

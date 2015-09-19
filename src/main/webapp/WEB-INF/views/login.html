@@ -1,0 +1,31 @@
+<div ng-app="app">
+<script src="/js/login.js"></script>
+<h1>Login</h1>
+<div ng-controller="LoginController">
+	<div class="alert alert-danger ng-cloak" ng-show="status.error"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> {{status.errorText}}.</div>
+
+	<form class="form" role="form" name="form" method="post" novalidate>
+		<div class="form-group has-feedback">
+			<label for="email">Email</label>
+			<input placeholder="john@example.com" class="form-control" type="email" name="email" id="email" ng-model="user.email" ng-model-options="{ updateOn: 'blur' }" required>
+	    </div>
+		<span ng-show="form.$submitted || form.email.$touched">
+			<div class="alert alert-danger ng-cloak" ng-show="form.email.$error.required"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Please enter email.</div>
+			<div class="alert alert-danger ng-cloak" ng-show="form.email.$error.email"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Email is not valid.</div>
+		</span>
+	    <div class="form-group">
+			<label for="password">Password</label>
+			<input class="form-control" type="password" name="password" id="password" ng-model="user.password" ng-model-options="{ updateOn: 'blur' }" required> 
+		</div>
+		<span ng-show="form.$submitted || form.password.$touched">
+			<div class="alert alert-danger ng-cloak" ng-show="form.password.$error.required"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Please enter password.</div>
+		</span>
+		
+		<button class="btn btn-primary" type="submit" ng-click="login()">Login</button>
+		<p class="pull-right">
+			<a class="btn btn-default" href="/signup">Sign Up</a>
+			<a class="btn btn-default" href="/password-reset">Forgot your password?</a>
+		</p>
+	</form>
+</div>
+</div>

@@ -5,13 +5,13 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 
-public class RegisterUserDto {
+public class SignupDto {
 	@NotNull
 	@Email
 	private String email;
 	@NotNull
 	@Size(min = 3)
-	private String login;
+	private String displayName;
 	@NotNull
 	@Size(min = 6)
 	private String password;
@@ -27,12 +27,12 @@ public class RegisterUserDto {
 		this.email = email;
 	}
 
-	public String getLogin() {
-		return login;
+	public String getDisplayName() {
+		return displayName;
 	}
 
-	public void setLogin(String login) {
-		this.login = login;
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
 	}
 
 	public String getPassword() {

@@ -1,15 +1,16 @@
-<script src="/js/register.js"></script>
+<div ng-app="app">
+<script src="/js/signup.js"></script>
 <h1>Sign Up</h1>
-<div ng-controller="RegisterController">
+<div ng-controller="SignupController">
 	<form class="form" role="form" name="form" method="post" novalidate>
 	    <div class="form-group has-feedback">		 
-			<label for="login">Name</label> 
-			<input placeholder="John Smith" class="form-control" type="text" name="login" id="login" ng-model="user.login" ng-model-options="{ updateOn: 'blur' }" required minlength="3">
-			<i class="glyphicon glyphicon-ok form-control-feedback" ng-show="form.login.$valid"></i>
+			<label for="displayName">Name</label> 
+			<input placeholder="John Smith" class="form-control" type="text" name="displayName" id="displayName" ng-model="user.displayName" ng-model-options="{ updateOn: 'blur' }" required minlength="3">
+			<i class="glyphicon glyphicon-ok form-control-feedback" ng-show="form.displayName.$valid"></i>
 	    </div>
-		<span ng-show="form.$submitted || form.login.$touched">
-			<div class="alert alert-danger ng-cloak" ng-show="form.login.$error.required"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Please enter your name.</div>
-			<div class="alert alert-danger ng-cloak" ng-show="form.login.$error.minlength"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Name should be at least 3 characters.</div>
+		<span ng-show="form.$submitted || form.displayName.$touched">
+			<div class="alert alert-danger ng-cloak" ng-show="form.displayName.$error.required"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Please enter your name.</div>
+			<div class="alert alert-danger ng-cloak" ng-show="form.displayName.$error.minlength"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Name should be at least 3 characters.</div>
 		</span>	
 		<div class="form-group has-feedback">
 			<label for="email">Email (required, but never shown)</label>
@@ -50,4 +51,4 @@
 		</p>
 	</form>
 </div>
-
+</div>

@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.euromoby.socialize.core.dao.UserAccountDao;
 import com.euromoby.socialize.core.model.UserAccount;
+import com.euromoby.socialize.core.utils.PasswordUtils;
 
 @Service
 public class UserService {
@@ -16,6 +17,20 @@ public class UserService {
 	@Transactional(readOnly=true)
 	public boolean emailExists(String email) {
 		return userAccountDao.findByEmail(email) != null;
+	}
+	
+	@Transactional(readOnly=true)
+	public UserAccount findUserByEmailAndPassword(String email, String password) {
+		UserAccount userAccount = userAccountDao.findByEmail(email);
+		if (userAccount == null) {
+			return null;
+		}
+		
+		if (PasswordUtils.passwordMatches(password, userAccount.getPasswordHash())) {
+			return userAccount;
+		}
+		
+		return null;
 	}
 	
 	@Transactional

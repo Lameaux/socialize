@@ -13,20 +13,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.euromoby.socialize.core.Config;
 import com.euromoby.socialize.core.mail.MailCreator;
 import com.euromoby.socialize.core.model.MailNew;
 import com.euromoby.socialize.core.model.UserAccount;
 import com.euromoby.socialize.core.service.MailService;
 import com.euromoby.socialize.core.service.UserService;
 import com.euromoby.socialize.web.dto.CheckEmailStatusDto;
-import com.euromoby.socialize.web.dto.RegisterUserDto;
-import com.euromoby.socialize.web.dto.RegisterUserStatusDto;
+import com.euromoby.socialize.web.dto.LoginDto;
+import com.euromoby.socialize.web.dto.LoginStatusDto;
+import com.euromoby.socialize.web.dto.SignupDto;
+import com.euromoby.socialize.web.dto.SignupStatusDto;
 import com.euromoby.socialize.web.transform.UserAccountTransformer;
 
 @Controller
-public class RegisterController {
+public class UserController {
 
-	private static final Logger log = LoggerFactory.getLogger(RegisterController.class);
+	private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
 	@Autowired
 	private Session session;
@@ -42,13 +45,22 @@ public class RegisterController {
 	
 	@Autowired
 	private MailCreator mailBuilder;
+	
+	@Autowired
+	private Config config;
 
-	@RequestMapping(value = "/register", method = RequestMethod.GET)
-	public String register(ModelMap model) {
-		model.put("pageTitle", "Register");
-		return "register";
+	@RequestMapping(value = "/signup", method = RequestMethod.GET)
+	public String signup(ModelMap model) {
+		model.put("pageTitle", "Sign Up");
+		return "signup";
 	}
 
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String login(ModelMap model) {
+		model.put("pageTitle", "Login");
+		return "login";
+	}	
+	
 	@RequestMapping(value = "/registered", method = RequestMethod.GET)
 	public String registered(ModelMap model) {
 		model.put("pageTitle", "Registered");
@@ -74,7 +86,7 @@ public class RegisterController {
 		return "redirect:/email-verified";
 	}
 	
-	@RequestMapping(value = "/register/check-email/{email}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+	@RequestMapping(value = "/check-email/{email}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
 	public @ResponseBody
 	CheckEmailStatusDto registerCheckEmail(ModelMap model, @PathVariable("email") String email) {
 		CheckEmailStatusDto status = new CheckEmailStatusDto();
@@ -83,10 +95,10 @@ public class RegisterController {
 		return status;
 	}
 
-	@RequestMapping(value = "/register/user", method = RequestMethod.POST, consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8")
+	@RequestMapping(value = "/signup", method = RequestMethod.POST, consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8")
 	public @ResponseBody
-	RegisterUserStatusDto registerUser(@Valid @RequestBody(required = true) RegisterUserDto user) {
-		RegisterUserStatusDto status = new RegisterUserStatusDto();
+	SignupStatusDto signupPost(@Valid @RequestBody(required = true) SignupDto user) {
+		SignupStatusDto status = new SignupStatusDto();
 		status.setUser(user);
 
 		boolean error = false;
@@ -115,5 +127,29 @@ public class RegisterController {
 		return status;
 	}
 	
+	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8")
+	public @ResponseBody
+	LoginStatusDto loginPost(@Valid @RequestBody(required = true) LoginDto user) {
+		LoginStatusDto status = new LoginStatusDto();
+
+		UserAccount userAccount = userService.findUserByEmailAndPassword(user.getEmail(), user.getPassword());
+		
+		if (userAccount == null) {
+			status.setError(true);
+			status.setErrorText("Email or password is invalid");
+			return status;
+		}
+		
+		if (!userAccount.isActive()) {
+			status.setError(true);
+			status.setErrorText("Email address is not verified");
+			return status;			
+		}
+		
+		status.setError(false);
+		String redirectUrl = config.getAppUrl();
+		status.setRedirectUrl(redirectUrl);
+		return status;
+	}
 	
 }
