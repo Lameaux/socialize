@@ -63,6 +63,7 @@
 				<value>com.euromoby.socialize.core.model.UserAccount</value>
 				<value>com.euromoby.socialize.core.model.MailNew</value>
 				<value>com.euromoby.socialize.core.model.MailSent</value>				
+				<value>com.euromoby.socialize.core.model.PasswordResetRequest</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

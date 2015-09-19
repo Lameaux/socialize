@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.euromoby.socialize.core.Config;
@@ -20,16 +21,15 @@ import com.euromoby.socialize.core.model.UserAccount;
 import com.euromoby.socialize.core.service.MailService;
 import com.euromoby.socialize.core.service.UserService;
 import com.euromoby.socialize.web.dto.CheckEmailStatusDto;
-import com.euromoby.socialize.web.dto.LoginDto;
-import com.euromoby.socialize.web.dto.LoginStatusDto;
+import com.euromoby.socialize.web.dto.CheckUserStatusDto;
 import com.euromoby.socialize.web.dto.SignupDto;
 import com.euromoby.socialize.web.dto.SignupStatusDto;
 import com.euromoby.socialize.web.transform.UserAccountTransformer;
 
 @Controller
-public class UserController {
+public class SignupController {
 
-	private static final Logger log = LoggerFactory.getLogger(UserController.class);
+	private static final Logger log = LoggerFactory.getLogger(SignupController.class);
 
 	@Autowired
 	private Session session;
@@ -49,32 +49,59 @@ public class UserController {
 	@Autowired
 	private Config config;
 
+	
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
-	public String signup(ModelMap model) {
+	public String signup(ModelMap model, @RequestParam(value="website", required=false) Integer websiteId) {
+		session.setWebsiteId(websiteId);
 		model.put("pageTitle", "Sign Up");
+		
+		String loginUrl = config.getAppUrl() + "/login";
+		if (websiteId != null) {
+			loginUrl += "?website=" + websiteId;
+		}
+		model.put("loginUrl", loginUrl);		
+		
 		return "signup";
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login(ModelMap model) {
-		model.put("pageTitle", "Login");
-		return "login";
-	}	
-	
 	@RequestMapping(value = "/registered", method = RequestMethod.GET)
-	public String registered(ModelMap model) {
+	public String registered(ModelMap model, @RequestParam(value="user", required=false) Integer userId, @RequestParam(value="website", required=false) Integer websiteId) {
+		session.setWebsiteId(websiteId);
+
+		String loginUrl = config.getAppUrl() + "/login";
+		if (websiteId != null) {
+			loginUrl += "?website=" + websiteId;
+		}		
+		
+		if (userId != null) {
+			UserAccount userAccount = userService.findById(userId);
+			if (userAccount != null && userAccount.isActive()) {
+				return "redirect:" + loginUrl;
+			}
+		}
+		
 		model.put("pageTitle", "Registered");
+		model.put("loginUrl", loginUrl);		
 		return "registered";
 	}	
-
+	
 	@RequestMapping(value = "/email-verified", method = RequestMethod.GET)
-	public String emailVerified(ModelMap model) {
+	public String emailVerified(ModelMap model, @RequestParam(value="website", required=false) Integer websiteId) {
+		session.setWebsiteId(websiteId);
+		
 		model.put("pageTitle", "Email Verified");
+		String loginUrl = config.getAppUrl() + "/login";
+		if (websiteId != null) {
+			loginUrl += "?website=" + websiteId;
+		}
+		model.put("loginUrl", loginUrl);
 		return "email-verified";
 	}	
 	
 	@RequestMapping(value = "/verify-email/{uuid}", method = RequestMethod.GET)
-	public String verifyEmail(ModelMap model, @PathVariable("uuid") String uuid) {
+	public String verifyEmail(ModelMap model, @PathVariable("uuid") String uuid, @RequestParam(value="website", required=false) Integer websiteId) {
+		session.setWebsiteId(websiteId);
+		
 		UserAccount userAccount = userService.findByUuid(uuid);
 		if (userAccount == null) {
 			return "redirect:/";
@@ -83,30 +110,47 @@ public class UserController {
 			userAccount.setActive(true);
 			userService.update(userAccount);
 		}
-		return "redirect:/email-verified";
+		
+		String redirectUrl = "/email-verified"; 
+		if (websiteId != null) {
+			redirectUrl += "?website=" + websiteId;
+		}		
+		return "redirect:" + redirectUrl;
 	}
 	
 	@RequestMapping(value = "/check-email/{email}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
 	public @ResponseBody
-	CheckEmailStatusDto registerCheckEmail(ModelMap model, @PathVariable("email") String email) {
+	CheckEmailStatusDto checkEmail(ModelMap model, @PathVariable("email") String email) {
 		CheckEmailStatusDto status = new CheckEmailStatusDto();
-		status.setEmail(email);
-		status.setExists(userService.emailExists(email));
+		UserAccount userAccount = userService.findByEmail(email);
+		if (userAccount != null) {
+			status.setExists(true);
+		}
 		return status;
 	}
 
+	@RequestMapping(value = "/check-user/{id}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+	public @ResponseBody
+	CheckUserStatusDto checkUser(ModelMap model, @PathVariable("id") Integer id) {
+		CheckUserStatusDto status = new CheckUserStatusDto();
+		UserAccount userAccount = userService.findById(id);
+		if (userAccount != null) {
+			status.setActive(userAccount.isActive());
+		}
+		return status;
+	}	
+	
 	@RequestMapping(value = "/signup", method = RequestMethod.POST, consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8")
 	public @ResponseBody
 	SignupStatusDto signupPost(@Valid @RequestBody(required = true) SignupDto user) {
 		SignupStatusDto status = new SignupStatusDto();
-		status.setUser(user);
 
 		boolean error = false;
 		if (!user.getPassword().equals(user.getPassword2())) {
 			error = true;
 		}
 
-		if (userService.emailExists(user.getEmail())) {
+		if (userService.findByEmail(user.getEmail()) != null) {
 			error = true;
 		}
 
@@ -115,40 +159,19 @@ public class UserController {
 			userService.save(userAccount);
 			
 			try {
-				MailNew emailConfirmation = mailBuilder.emailConfirmation(userAccount);
+				MailNew emailConfirmation = mailBuilder.emailConfirmation(userAccount, session);
 				mailService.sendMail(emailConfirmation);
 			} catch (Exception e) {
 				log.error("Unable to send confirmation email", e);
 			}
 			
-			status.setId(userAccount.getId());
+			String redirectUrl = config.getAppUrl() + "/registered?user=" + userAccount.getId();
+			if (session.getWebsiteId() != null) {
+				redirectUrl += "&website=" + session.getWebsiteId();
+			}
+			status.setRedirectUrl(redirectUrl);
 		}
 		status.setError(error);
-		return status;
-	}
-	
-	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8")
-	public @ResponseBody
-	LoginStatusDto loginPost(@Valid @RequestBody(required = true) LoginDto user) {
-		LoginStatusDto status = new LoginStatusDto();
-
-		UserAccount userAccount = userService.findUserByEmailAndPassword(user.getEmail(), user.getPassword());
-		
-		if (userAccount == null) {
-			status.setError(true);
-			status.setErrorText("Email or password is invalid");
-			return status;
-		}
-		
-		if (!userAccount.isActive()) {
-			status.setError(true);
-			status.setErrorText("Email address is not verified");
-			return status;			
-		}
-		
-		status.setError(false);
-		String redirectUrl = config.getAppUrl();
-		status.setRedirectUrl(redirectUrl);
 		return status;
 	}
 	

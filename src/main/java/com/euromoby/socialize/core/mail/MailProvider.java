@@ -29,7 +29,7 @@ public class MailProvider {
 		log.info("Sending mail to {}", mailNew.getRecipient());
 		
 		MimeMessage mime = mailSender.createMimeMessage();
-		MimeMessageHelper helper = new MimeMessageHelper(mime, true);
+		MimeMessageHelper helper = new MimeMessageHelper(mime, true, "UTF-8");
 		helper.setFrom(config.getMailSenderName() + " <" + config.getMailSenderAddress() + ">");
 		helper.setTo("sergeisizov@gmail.com"); // TODO
 		helper.setSubject(mailNew.getSubject());

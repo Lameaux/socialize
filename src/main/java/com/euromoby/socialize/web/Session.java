@@ -8,6 +8,8 @@ public class Session implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private Integer websiteId;
+
 	private AuthUser authUser;
 
 	public AuthUser getAuthUser() {
@@ -16,6 +18,14 @@ public class Session implements Serializable {
 
 	public void setAuthUser(AuthUser authUser) {
 		this.authUser = authUser;
+	}
+
+	public Integer getWebsiteId() {
+		return websiteId;
+	}
+
+	public void setWebsiteId(Integer websiteId) {
+		this.websiteId = websiteId;
 	}
 
 }

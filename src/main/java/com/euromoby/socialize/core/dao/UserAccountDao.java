@@ -22,6 +22,12 @@ public class UserAccountDao {
 		userAccount.setUpdated(System.currentTimeMillis());
 		sessionFactory.getCurrentSession().update(userAccount);
 	}	
+
+	public UserAccount findById(Integer id) {
+		Query query = sessionFactory.getCurrentSession().createQuery("from UserAccount where id = :id");
+		query.setInteger("id", id);
+		return (UserAccount) query.uniqueResult();
+	}	
 	
 	public UserAccount findByEmail(String email) {
 		Query query = sessionFactory.getCurrentSession().createQuery("from UserAccount where email = :email");

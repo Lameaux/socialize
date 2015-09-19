@@ -5,7 +5,7 @@
 	<div class="alert alert-danger ng-cloak" ng-show="status.error"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> {{status.errorText}}.</div>
 
 	<form class="form" role="form" name="form" method="post" novalidate>
-		<div class="form-group has-feedback">
+		<div class="form-group">
 			<label for="email">Email</label>
 			<input placeholder="john@example.com" class="form-control" type="email" name="email" id="email" ng-model="user.email" ng-model-options="{ updateOn: 'blur' }" required>
 	    </div>
@@ -23,8 +23,8 @@
 		
 		<button class="btn btn-primary" type="submit" ng-click="login()">Login</button>
 		<p class="pull-right">
-			<a class="btn btn-default" href="/signup">Sign Up</a>
-			<a class="btn btn-default" href="/password-reset">Forgot your password?</a>
+			<a class="btn btn-default" href="$signupUrl">Sign Up</a>
+			<a class="btn btn-default" href="$passwordResetUrl">Forgot your password?</a>
 		</p>
 	</form>
 </div>

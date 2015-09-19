@@ -17,8 +17,10 @@ app.controller('SignupController', [ '$scope', '$window', 'Signup', function($sc
 	$scope.register = function() {
 		if ($scope.form.$valid) {
 			var signup = new Signup($scope.user);
-			signup.$save(function(){
-				$window.location.href = '/registered';
+			signup.$save(function(status){
+				if (!status.error && !!status.redirectUrl) {
+					$window.location.href = status.redirectUrl;
+				}
 			});
 		}
 	};
@@ -52,8 +54,8 @@ app.directive('uniqueemail',
 							return $q.when();
 						}
 						var def = $q.defer();
-						CheckEmail.get({email : modelValue}, function(data) {
-							if (data.exists) {
+						CheckEmail.get({email : modelValue}, function(status) {
+							if (status.exists) {
 								def.reject();	
 							} else {
 								def.resolve();

@@ -13,7 +13,9 @@ import org.springframework.stereotype.Component;
 
 import com.euromoby.socialize.core.Config;
 import com.euromoby.socialize.core.model.MailNew;
+import com.euromoby.socialize.core.model.PasswordResetRequest;
 import com.euromoby.socialize.core.model.UserAccount;
+import com.euromoby.socialize.web.Session;
 
 @Component
 public class MailCreator {
@@ -50,19 +52,41 @@ public class MailCreator {
 	
 	}
 	
-	public MailNew emailConfirmation(UserAccount userAccount) throws Exception {
+	public MailNew emailConfirmation(UserAccount userAccount, Session session) throws Exception {
 		MailNew mailNew = createEmptyEmail(userAccount);
 		mailNew.setSubject("Confirm your email address");
 
 		Map<String, String> map = new HashMap<>();
 		map.put("NAME", userAccount.getDisplayName());
-		map.put("UUID", userAccount.getUuid());
 		map.put("APP_TITLE", config.getAppTitle());
-		map.put("APP_URL", config.getAppUrl());
+		String confirmUrl = config.getAppUrl() + "/verify-email/" + userAccount.getUuid();
+		if (session.getWebsiteId() != null) {
+			confirmUrl += "?website=" + session.getWebsiteId();
+		}
+		map.put("CONFIRM_URL", confirmUrl);
 		String content = createTextFromTemplate("confirm-email", map);
 		mailNew.setContent(content);
 		
 		return mailNew;
 	}
+
+	public MailNew emailPasswordReset(PasswordResetRequest passwordResetRequest, UserAccount userAccount, Session session) throws Exception {
+		MailNew mailNew = createEmptyEmail(userAccount);
+		mailNew.setSubject("Password Reset");
+
+		Map<String, String> map = new HashMap<>();
+		map.put("NAME", userAccount.getDisplayName());
+		map.put("APP_TITLE", config.getAppTitle());
+		
+		String resetUrl = config.getAppUrl() + "/password-reset/" + passwordResetRequest.getUuid();
+		if (session.getWebsiteId() != null) {
+			resetUrl += "?website=" + session.getWebsiteId();
+		}
+		map.put("RESET_URL", resetUrl);
+		String content = createTextFromTemplate("password-reset", map);
+		mailNew.setContent(content);
+		
+		return mailNew;
+	}	
 	
 }

@@ -35,6 +35,13 @@ CREATE TABLE IF NOT EXISTS mail_sent (
 	sent BIGINT DEFAULT 0
 ) ENGINE=InnoDB;
 
+CREATE TABLE IF NOT EXISTS password_reset_request (
+	user_account_id INT NOT NULL PRIMARY KEY,
+	uuid VARCHAR(36),
+	created BIGINT DEFAULT 0
+) ENGINE=InnoDB;
+CREATE UNIQUE INDEX password_reset_request_uuid ON password_reset_request(uuid);
+
 -- --------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS website (
