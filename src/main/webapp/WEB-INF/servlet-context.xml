@@ -15,6 +15,13 @@
 		<mvc:path-matching registered-suffixes-only="true"/>
 	</mvc:annotation-driven>
 
+    <mvc:interceptors>
+        <mvc:interceptor>
+	        <mvc:mapping path="/**" />
+	        <bean class="com.euromoby.socialize.web.interceptor.DomainInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
+
 	<bean id="velocityConfig"
 		class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
 		<property name="resourceLoaderPath" value="/WEB-INF/views/" />

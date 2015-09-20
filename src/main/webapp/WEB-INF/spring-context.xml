@@ -28,7 +28,8 @@
 		<property name="vkSecureKey" value="${vk.secure.key}" />
 		<property name="appTitle" value="${app.title}" />
 		<property name="appUrl" value="${app.url}" />
-		<property name="appDomain" value="${app.domain}" />
+		<property name="appHost" value="${app.host}" />
+		<property name="websiteUrl" value="${website.url}" />
 		<property name="mailSenderName" value="${mail.sender.name}" />
 		<property name="mailSenderAddress" value="${mail.sender.address}" />
 	</bean>

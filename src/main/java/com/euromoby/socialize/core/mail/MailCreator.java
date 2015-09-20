@@ -59,11 +59,14 @@ public class MailCreator {
 		Map<String, String> map = new HashMap<>();
 		map.put("NAME", userAccount.getDisplayName());
 		map.put("APP_TITLE", config.getAppTitle());
-		String confirmUrl = config.getAppUrl() + "/verify-email/" + userAccount.getUuid();
-		if (session.getWebsiteId() != null) {
-			confirmUrl += "?website=" + session.getWebsiteId();
+		
+		String confirmUrl = config.getAppUrl();
+		if (session.getWebsite() != null) {
+			confirmUrl = config.getWebsiteUrl().replace("{domain}", session.getWebsite());
 		}
+		confirmUrl += "/verify-email/" + userAccount.getUuid();
 		map.put("CONFIRM_URL", confirmUrl);
+		
 		String content = createTextFromTemplate("confirm-email", map);
 		mailNew.setContent(content);
 		
@@ -77,12 +80,14 @@ public class MailCreator {
 		Map<String, String> map = new HashMap<>();
 		map.put("NAME", userAccount.getDisplayName());
 		map.put("APP_TITLE", config.getAppTitle());
-		
-		String resetUrl = config.getAppUrl() + "/password-reset/" + passwordResetRequest.getUuid();
-		if (session.getWebsiteId() != null) {
-			resetUrl += "?website=" + session.getWebsiteId();
+
+		String resetUrl = config.getAppUrl();
+		if (session.getWebsite() != null) {
+			resetUrl = config.getWebsiteUrl().replace("{domain}", session.getWebsite());
 		}
+		resetUrl += "/password-reset/" + passwordResetRequest.getUuid();
 		map.put("RESET_URL", resetUrl);
+		
 		String content = createTextFromTemplate("password-reset", map);
 		mailNew.setContent(content);
 		

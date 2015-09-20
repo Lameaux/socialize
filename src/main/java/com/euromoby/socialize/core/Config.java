@@ -7,8 +7,9 @@ public class Config {
 	private String httpUserAgent = DEFAULT_HTTP_USERAGENT;
 
 	private String appUrl;
-	private String appDomain;
+	private String appHost;
 	private String appTitle;
+	private String websiteUrl;
 
 	private int clientTimeout;
 	private String proxyHost;
@@ -32,12 +33,20 @@ public class Config {
 		this.appUrl = appUrl;
 	}
 
-	public String getAppDomain() {
-		return appDomain;
+	public String getAppHost() {
+		return appHost;
 	}
 
-	public void setAppDomain(String appDomain) {
-		this.appDomain = appDomain;
+	public void setAppHost(String appHost) {
+		this.appHost = appHost;
+	}
+
+	public String getWebsiteUrl() {
+		return websiteUrl;
+	}
+
+	public void setWebsiteUrl(String websiteUrl) {
+		this.websiteUrl = websiteUrl;
 	}
 
 	public String getAppTitle() {

@@ -43,14 +43,14 @@ CREATE TABLE IF NOT EXISTS password_reset_request (
 CREATE UNIQUE INDEX password_reset_request_uuid ON password_reset_request(uuid);
 
 CREATE TABLE IF NOT EXISTS website (
-	id INT auto_increment NOT NULL PRIMARY KEY,
+	domain VARCHAR(255) NOT NULL PRIMARY KEY,
 	user_account_id INT NOT NULL,
-	domain VARCHAR(255),
 	site_name VARCHAR(255),
 	callback_url VARCHAR(255),
-	uuid VARCHAR(255)
+	uuid VARCHAR(255),
+	created BIGINT DEFAULT 0,
+	updated BIGINT DEFAULT 0
 ) ENGINE=InnoDB;
-CREATE UNIQUE INDEX website_domain ON website(domain);
 CREATE UNIQUE INDEX website_uuid ON website(uuid);
 -- --------------------------------------------------------------
 

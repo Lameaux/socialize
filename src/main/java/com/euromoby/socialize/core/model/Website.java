@@ -2,8 +2,6 @@ package com.euromoby.socialize.core.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -12,15 +10,11 @@ import javax.persistence.Table;
 public class Website {
 
 	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	@Column(name = "domain")
+	private String domain;
 
 	@Column(name = "user_account_id")
 	private Integer userAccountId;
-
-	@Column(name = "domain")
-	private String domain;
 
 	@Column(name = "site_name")
 	private String siteName;
@@ -36,14 +30,6 @@ public class Website {
 
 	@Column(name = "updated")
 	private long updated;
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	public Integer getUserAccountId() {
 		return userAccountId;

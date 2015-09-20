@@ -10,11 +10,11 @@ import com.euromoby.socialize.web.dto.SignupDto;
 
 @Component
 public class UserAccountTransformer {
-	public UserAccount newUserAccount(SignupDto registerUser) {
+	public UserAccount newUserAccount(SignupDto dto) {
 		UserAccount userAccount = new UserAccount();
-		userAccount.setEmail(registerUser.getEmail());
-		userAccount.setDisplayName(registerUser.getDisplayName());
-		userAccount.setPasswordHash(PasswordUtils.generatePasswordHash(registerUser.getPassword()));
+		userAccount.setEmail(dto.getEmail());
+		userAccount.setDisplayName(dto.getDisplayName());
+		userAccount.setPasswordHash(PasswordUtils.generatePasswordHash(dto.getPassword()));
 		userAccount.setUuid(UUID.randomUUID().toString());
 		userAccount.setCreated(System.currentTimeMillis());
 		userAccount.setUpdated(0);

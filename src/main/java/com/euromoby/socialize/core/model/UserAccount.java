@@ -43,6 +43,14 @@ public class UserAccount {
 	@Type(type = "org.hibernate.type.NumericBooleanType")
 	private boolean active;
 
+	public UserAccount() {
+		
+	}
+	
+	public UserAccount(Integer id) {
+		this.id = id;
+	}
+	
 	public Integer getId() {
 		return id;
 	}

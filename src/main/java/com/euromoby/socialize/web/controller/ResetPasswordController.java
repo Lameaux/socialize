@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.euromoby.socialize.core.Config;
@@ -54,49 +53,21 @@ public class ResetPasswordController {
 	private Config config;
 
 	@RequestMapping(value = "/password-reset", method = RequestMethod.GET)
-	public String passwordReset(ModelMap model, @RequestParam(value="website", required=false) Integer websiteId) {
-		session.setWebsiteId(websiteId);
-
-		String signupUrl = config.getAppUrl() + "/signup";
-		if (websiteId != null) {
-			signupUrl += "?website=" + websiteId;
-		}
-		
-		String loginUrl = config.getAppUrl() + "/login";
-		if (websiteId != null) {
-			loginUrl += "?website=" + websiteId;
-		}
-		
-		model.put("signupUrl", signupUrl);	
-		model.put("loginUrl", loginUrl);		
-
+	public String passwordReset(ModelMap model) {
 		model.put("pageTitle", "Password Reset");		
 		return "password-reset";
 	}	
 
 	@RequestMapping(value = "/password-reset/{uuid}", method = RequestMethod.GET)
-	public String passwordResetForm(ModelMap model, @PathVariable("uuid") String uuid, @RequestParam(value="website", required=false) Integer websiteId) {
-		session.setWebsiteId(websiteId);
+	public String passwordResetForm(ModelMap model, @PathVariable("uuid") String uuid) {
 
-		String passwordResetUrl = config.getAppUrl() + "/password-reset";
-		if (websiteId != null) {
-			passwordResetUrl += "?website=" + websiteId;
-		}
-		
 		PasswordResetRequest request = passwordResetRequestService.findByUuid(uuid);
 		if (request == null || request.getCreated() < System.currentTimeMillis() - PasswordResetRequest.TIME_TO_LIVE) {
-			return "redirect:" + passwordResetUrl;
+			return "redirect:/password-reset";
 		}
 		
-		String loginUrl = config.getAppUrl() + "/login";
-		if (websiteId != null) {
-			loginUrl += "?website=" + websiteId;
-		}
-
-		model.put("pageTitle", "Password Reset");		
 		model.put("uuid", uuid);
-		model.put("loginUrl", loginUrl);		
-		
+		model.put("pageTitle", "Password Reset");		
 		return "password-reset-form";
 	}	
 	

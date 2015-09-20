@@ -1,23 +1,23 @@
 var websiteAddServices = angular.module('websiteAddServices', ['ngResource']);
 
-websiteAddServices.factory('CheckEmail', [ '$resource', function($resource) {
-	return $resource('/check-email/:email');
+websiteAddServices.factory('CheckDomain', [ '$resource', function($resource) {
+	return $resource('/check-domain/:domain');
 } ]);
 
-websiteAddServices.factory('Signup', [ '$resource', function($resource) {
-	return $resource('/signup');
+websiteAddServices.factory('Website', [ '$resource', function($resource) {
+	return $resource('/add-website');
 } ]);
 
 var app = angular.module('app', ['ngRoute', 'websiteAddServices']);
 
-app.controller('WebsiteAddController', [ '$scope', '$window', 'Signup', function($scope, $window, Signup) {
+app.controller('WebsiteAddController', [ '$scope', '$window', 'Website', function($scope, $window, Website) {
 
-	$scope.user = {};
+	$scope.website = {};
 	
-	$scope.register = function() {
+	$scope.addWebsite = function() {
 		if ($scope.form.$valid) {
-			var signup = new Signup($scope.user);
-			signup.$save(function(status){
+			var newWebsite = new Website($scope.website);
+			newWebsite.$save(function(status){
 				if (!status.error && !!status.redirectUrl) {
 					$window.location.href = status.redirectUrl;
 				}
@@ -27,34 +27,34 @@ app.controller('WebsiteAddController', [ '$scope', '$window', 'Signup', function
 
 } ]);
 
-app.directive('repeatpassword', function() {
+app.directive('validdomain', function() {
 	  return {
 	    require: 'ngModel',
 	    link: function(scope, elm, attrs, ctrl) {
-	      ctrl.$validators.repeatpassword = function(modelValue, viewValue) {
+	      ctrl.$validators.validdomain = function(modelValue, viewValue) {
 	        if (ctrl.$isEmpty(modelValue)) {
 	          // consider empty models to be valid
 	          return true;
 	        }
-	        // password should be the same
-	        return scope.user.password == modelValue;
+	        // alphanumeric with hyphens
+	        return /^[a-z0-9]+[a-z0-9-]+[a-z0-9]+$/i.test(modelValue);
 	      };
 	    }
 	  };
 	});
 
-app.directive('uniqueemail',
-		['CheckEmail', '$q', function(CheckEmail, $q) {
+app.directive('uniquedomain',
+		['CheckDomain', '$q', function(CheckDomain, $q) {
 			return {
 				require : 'ngModel',
 				link : function(scope, elm, attrs, ctrl) {
-					ctrl.$asyncValidators.uniqueemail = function(modelValue, viewValue) {
+					ctrl.$asyncValidators.uniquedomain = function(modelValue, viewValue) {
 						if (ctrl.$isEmpty(modelValue)) {
 							// consider empty model valid
 							return $q.when();
 						}
 						var def = $q.defer();
-						CheckEmail.get({email : modelValue}, function(status) {
+						CheckDomain.get({domain : modelValue}, function(status) {
 							if (status.exists) {
 								def.reject();	
 							} else {

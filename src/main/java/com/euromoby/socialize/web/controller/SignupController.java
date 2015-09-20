@@ -52,56 +52,34 @@ public class SignupController {
 
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
-	public String signup(ModelMap model, @RequestParam(value="website", required=false) Integer websiteId) {
-		session.setWebsiteId(websiteId);
+	public String signup(ModelMap model) {
 		model.put("pageTitle", "Sign Up");
-		
-		String loginUrl = config.getAppUrl() + "/login";
-		if (websiteId != null) {
-			loginUrl += "?website=" + websiteId;
-		}
-		model.put("loginUrl", loginUrl);		
-		
 		return "signup";
 	}
 
 	@RequestMapping(value = "/registered", method = RequestMethod.GET)
-	public String registered(ModelMap model, @RequestParam(value="user", required=false) Integer userId, @RequestParam(value="website", required=false) Integer websiteId) {
-		session.setWebsiteId(websiteId);
-
-		String loginUrl = config.getAppUrl() + "/login";
-		if (websiteId != null) {
-			loginUrl += "?website=" + websiteId;
-		}		
+	public String registered(ModelMap model, @RequestParam(value="user", required=false) Integer userId) {
 		
 		if (userId != null) {
 			UserAccount userAccount = userService.findById(userId);
 			if (userAccount != null && userAccount.isActive()) {
-				return "redirect:" + loginUrl;
+				return "redirect:/login";
 			}
 		}
 		
 		model.put("pageTitle", "Registered");
-		model.put("loginUrl", loginUrl);		
 		return "registered";
 	}	
 	
 	@RequestMapping(value = "/email-verified", method = RequestMethod.GET)
-	public String emailVerified(ModelMap model, @RequestParam(value="website", required=false) Integer websiteId) {
-		session.setWebsiteId(websiteId);
+	public String emailVerified(ModelMap model) {
 		
 		model.put("pageTitle", "Email Verified");
-		String loginUrl = config.getAppUrl() + "/login";
-		if (websiteId != null) {
-			loginUrl += "?website=" + websiteId;
-		}
-		model.put("loginUrl", loginUrl);
 		return "email-verified";
 	}	
 	
 	@RequestMapping(value = "/verify-email/{uuid}", method = RequestMethod.GET)
-	public String verifyEmail(ModelMap model, @PathVariable("uuid") String uuid, @RequestParam(value="website", required=false) Integer websiteId) {
-		session.setWebsiteId(websiteId);
+	public String verifyEmail(ModelMap model, @PathVariable("uuid") String uuid) {
 		
 		UserAccount userAccount = userService.findByUuid(uuid);
 		if (userAccount == null) {
@@ -112,11 +90,7 @@ public class SignupController {
 			userService.update(userAccount);
 		}
 		
-		String redirectUrl = "/email-verified"; 
-		if (websiteId != null) {
-			redirectUrl += "?website=" + websiteId;
-		}		
-		return "redirect:" + redirectUrl;
+		return "redirect:/email-verified";
 	}
 	
 	@RequestMapping(value = "/check-email/{email}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
@@ -146,33 +120,34 @@ public class SignupController {
 	SignupStatusDto signupPost(@Valid @RequestBody(required = true) SignupDto user) {
 		SignupStatusDto status = new SignupStatusDto();
 
-		boolean error = false;
 		if (!user.getPassword().equals(user.getPassword2())) {
-			error = true;
+			status.setError(true);
+			return status;
 		}
 
 		if (userService.findByEmail(user.getEmail()) != null) {
-			error = true;
+			status.setError(true);
+			return status;
 		}
 
-		if (!error) {
-			UserAccount userAccount = userAccountTransformer.newUserAccount(user);
-			userService.save(userAccount);
-			
-			try {
-				MailNew emailConfirmation = mailBuilder.emailConfirmation(userAccount, session);
-				mailService.sendMail(emailConfirmation);
-			} catch (Exception e) {
-				log.error("Unable to send confirmation email", e);
-			}
-			
-			String redirectUrl = config.getAppUrl() + "/registered?user=" + userAccount.getId();
-			if (session.getWebsiteId() != null) {
-				redirectUrl += "&website=" + session.getWebsiteId();
-			}
-			status.setRedirectUrl(redirectUrl);
+		UserAccount userAccount = userAccountTransformer.newUserAccount(user);
+		userService.save(userAccount);
+
+		try {
+			MailNew emailConfirmation = mailBuilder.emailConfirmation(userAccount, session);
+			mailService.sendMail(emailConfirmation);
+		} catch (Exception e) {
+			log.error("Unable to send confirmation email", e);
 		}
-		status.setError(error);
+
+		String redirectUrl = config.getAppUrl();
+		if (session.getWebsite() != null) {
+			redirectUrl = config.getWebsiteUrl().replace("{domain}", session.getWebsite());
+		}
+		redirectUrl += "/registered?user=" + userAccount.getId();
+		status.setRedirectUrl(redirectUrl);
+		
+		status.setError(false);
 		return status;
 	}
 	

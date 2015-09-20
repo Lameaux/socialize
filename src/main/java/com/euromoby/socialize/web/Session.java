@@ -8,9 +8,9 @@ public class Session implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Integer websiteId;
+	private String website;
 
-	private UserAccount userAccount = new UserAccount(); // TODO
+	private UserAccount userAccount; // = new UserAccount(3); // TODO
 
 	public UserAccount getUserAccount() {
 		return userAccount;
@@ -20,12 +20,12 @@ public class Session implements Serializable {
 		this.userAccount = userAccount;
 	}
 
-	public Integer getWebsiteId() {
-		return websiteId;
+	public String getWebsite() {
+		return website;
 	}
 
-	public void setWebsiteId(Integer websiteId) {
-		this.websiteId = websiteId;
+	public void setWebsite(String website) {
+		this.website = website;
 	}
 
 }

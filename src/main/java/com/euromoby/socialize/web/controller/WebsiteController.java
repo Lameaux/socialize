@@ -2,47 +2,36 @@ package com.euromoby.socialize.web.controller;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.euromoby.socialize.core.Config;
-import com.euromoby.socialize.core.mail.MailCreator;
-import com.euromoby.socialize.core.model.MailNew;
-import com.euromoby.socialize.core.model.UserAccount;
-import com.euromoby.socialize.core.service.MailService;
-import com.euromoby.socialize.core.service.UserService;
+import com.euromoby.socialize.core.model.Website;
+import com.euromoby.socialize.core.service.WebsiteService;
 import com.euromoby.socialize.web.Session;
-import com.euromoby.socialize.web.dto.SignupDto;
-import com.euromoby.socialize.web.dto.SignupStatusDto;
-import com.euromoby.socialize.web.transform.UserAccountTransformer;
+import com.euromoby.socialize.web.dto.CheckDomainStatusDto;
+import com.euromoby.socialize.web.dto.WebsiteDto;
+import com.euromoby.socialize.web.dto.WebsiteStatusDto;
+import com.euromoby.socialize.web.exception.BadRequestException;
+import com.euromoby.socialize.web.transform.WebsiteTransformer;
 
 @Controller
 public class WebsiteController {
-
-	private static final Logger log = LoggerFactory.getLogger(WebsiteController.class);
 
 	@Autowired
 	private Session session;
 
 	@Autowired
-	private UserService userService;
-
-	@Autowired
-	private UserAccountTransformer userAccountTransformer;
+	private WebsiteService websiteService;
 	
 	@Autowired
-	private MailService mailService;
-	
-	@Autowired
-	private MailCreator mailBuilder;
+	private WebsiteTransformer websiteTransformer;
 	
 	@Autowired
 	private Config config;
@@ -55,65 +44,62 @@ public class WebsiteController {
 		}
 		
 		model.put("pageTitle", "Add Website");
-		model.put("appDomain", config.getAppDomain());
+		model.put("appDomain", config.getAppHost());
 		return "website-add";
 	}
 
-	@RequestMapping(value = "/website", method = RequestMethod.GET)
-	public String registered(ModelMap model, @RequestParam(value="user", required=false) Integer userId, @RequestParam(value="website", required=false) Integer websiteId) {
-		session.setWebsiteId(websiteId);
+	@RequestMapping(value = "/check-domain/{domain}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+	public @ResponseBody
+	CheckDomainStatusDto checkDomain(ModelMap model, @PathVariable("domain") String domain) {
 
-		String loginUrl = config.getAppUrl() + "/login";
-		if (websiteId != null) {
-			loginUrl += "?website=" + websiteId;
-		}		
-		
-		if (userId != null) {
-			UserAccount userAccount = userService.findById(userId);
-			if (userAccount != null && userAccount.isActive()) {
-				return "redirect:" + loginUrl;
-			}
+		if (session.getUserAccount() == null) {
+			throw new BadRequestException();
 		}
 		
-		model.put("pageTitle", "Registered");
-		model.put("loginUrl", loginUrl);		
-		return "registered";
+		CheckDomainStatusDto status = new CheckDomainStatusDto();
+		
+		Website website = websiteService.findByDomain(domain.toLowerCase());
+		if (website != null) {
+			status.setExists(true);
+		}
+		return status;
 	}	
-	
 
 	@RequestMapping(value = "/add-website", method = RequestMethod.POST, consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8")
 	public @ResponseBody
-	SignupStatusDto addPost(@Valid @RequestBody(required = true) SignupDto user) {
-		SignupStatusDto status = new SignupStatusDto();
-
-		boolean error = false;
-		if (!user.getPassword().equals(user.getPassword2())) {
-			error = true;
+	WebsiteStatusDto addPost(@Valid @RequestBody(required = true) WebsiteDto dto) {
+		if (session.getUserAccount() == null) {
+			throw new BadRequestException();
+		}
+		
+		WebsiteStatusDto status = new WebsiteStatusDto();
+		
+		if (!dto.getDomain().toLowerCase().matches("^[a-z0-9]+[a-z0-9-]+[a-z0-9]+$")) {
+			status.setError(true);
+			return status;			
+		}
+		if (websiteService.findByDomain(dto.getDomain().toLowerCase()) != null) {
+			status.setError(true);
+			return status;
 		}
 
-		if (userService.findByEmail(user.getEmail()) != null) {
-			error = true;
-		}
+		Website website = websiteTransformer.newWebsite(dto, session.getUserAccount());
+		websiteService.save(website);
 
-		if (!error) {
-			UserAccount userAccount = userAccountTransformer.newUserAccount(user);
-			userService.save(userAccount);
-			
-			try {
-				MailNew emailConfirmation = mailBuilder.emailConfirmation(userAccount, session);
-				mailService.sendMail(emailConfirmation);
-			} catch (Exception e) {
-				log.error("Unable to send confirmation email", e);
-			}
-			
-			String redirectUrl = config.getAppUrl() + "/registered?user=" + userAccount.getId();
-			if (session.getWebsiteId() != null) {
-				redirectUrl += "&website=" + session.getWebsiteId();
-			}
-			status.setRedirectUrl(redirectUrl);
-		}
-		status.setError(error);
+		String redirectUrl = config.getAppUrl() + "/website/" + website.getDomain();
+		status.setRedirectUrl(redirectUrl);
+		status.setError(false);
 		return status;
 	}
+
+	@RequestMapping(value = "/website/{domain}", method = RequestMethod.GET)
+	public String website(ModelMap model, @PathVariable("domain") String domain) throws Exception {
+		if (session.getUserAccount() == null) {
+			throw new BadRequestException();
+		}
+		
+		model.put("pageTitle", domain);		
+		return "empty";
+	}	
 	
 }
