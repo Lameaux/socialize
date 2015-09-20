@@ -52,7 +52,7 @@ public class TwitterAuthController {
 		try {
 			AccessToken accessToken = twitterProvider.getAccessToken(oAuthToken, oAuthVerifier);
 			User user = twitterProvider.verifyCredentials(accessToken);
-			session.setAuthUser(createAuthUser(user));
+			//session.setAuthUser(createAuthUser(user));
 			return "redirect:/profile";
 		} catch (TwitterException e) {
 			log.debug("auth failed", e);

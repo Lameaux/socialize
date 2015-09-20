@@ -1,4 +1,4 @@
-package com.euromoby.socialize.web;
+package com.euromoby.socialize.web.controller;
 
 import java.util.UUID;
 
@@ -25,6 +25,7 @@ import com.euromoby.socialize.core.service.MailService;
 import com.euromoby.socialize.core.service.PasswordResetRequestService;
 import com.euromoby.socialize.core.service.UserService;
 import com.euromoby.socialize.core.utils.PasswordUtils;
+import com.euromoby.socialize.web.Session;
 import com.euromoby.socialize.web.dto.PasswordResetRequestDto;
 import com.euromoby.socialize.web.dto.PasswordResetRequestFormDto;
 import com.euromoby.socialize.web.dto.PasswordResetStatusDto;
@@ -158,6 +159,7 @@ public class ResetPasswordController {
 		}		
 		
 		userAccount.setPasswordHash(PasswordUtils.generatePasswordHash(form.getPassword()));
+		userAccount.setActive(true);
 		userService.update(userAccount);
 		passwordResetRequestService.delete(passwordResetRequest);
 		

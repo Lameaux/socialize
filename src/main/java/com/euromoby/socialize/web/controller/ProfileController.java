@@ -1,4 +1,4 @@
-package com.euromoby.socialize.web;
+package com.euromoby.socialize.web.controller;
 
 import org.apache.velocity.tools.generic.EscapeTool;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +7,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.euromoby.socialize.core.twitter.TwitterProvider;
+import com.euromoby.socialize.web.Session;
 
 @Controller
 public class ProfileController {

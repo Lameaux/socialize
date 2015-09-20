@@ -1,4 +1,4 @@
-package com.euromoby.socialize.web;
+package com.euromoby.socialize.web.filter;
 
 import java.io.IOException;
 

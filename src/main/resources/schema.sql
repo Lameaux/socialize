@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS user_account (
 	last_login BIGINT DEFAULT 0,
 	active TINYINT DEFAULT 0
 ) ENGINE=InnoDB;
-CREATE UNIQUE INDEX user_account_email ON user_account(email);
+CREATE INDEX user_account_email ON user_account(email);
 CREATE UNIQUE INDEX user_account_uuid ON user_account(uuid);
 
 
@@ -42,14 +42,17 @@ CREATE TABLE IF NOT EXISTS password_reset_request (
 ) ENGINE=InnoDB;
 CREATE UNIQUE INDEX password_reset_request_uuid ON password_reset_request(uuid);
 
--- --------------------------------------------------------------
-
 CREATE TABLE IF NOT EXISTS website (
 	id INT auto_increment NOT NULL PRIMARY KEY,
-	account_id INT NOT NULL,
+	user_account_id INT NOT NULL,
 	domain VARCHAR(255),
-	token VARCHAR(255)
+	site_name VARCHAR(255),
+	callback_url VARCHAR(255),
+	uuid VARCHAR(255)
 ) ENGINE=InnoDB;
+CREATE UNIQUE INDEX website_domain ON website(domain);
+CREATE UNIQUE INDEX website_uuid ON website(uuid);
+-- --------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS auth_user (
 	id INT auto_increment NOT NULL PRIMARY KEY,

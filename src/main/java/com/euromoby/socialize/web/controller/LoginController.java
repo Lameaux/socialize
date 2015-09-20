@@ -1,4 +1,4 @@
-package com.euromoby.socialize.web;
+package com.euromoby.socialize.web.controller;
 
 import javax.validation.Valid;
 
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.euromoby.socialize.core.Config;
 import com.euromoby.socialize.core.model.UserAccount;
 import com.euromoby.socialize.core.service.UserService;
+import com.euromoby.socialize.web.Session;
 import com.euromoby.socialize.web.dto.LoginDto;
 import com.euromoby.socialize.web.dto.LoginStatusDto;
 
@@ -76,6 +77,8 @@ public class LoginController {
 		userAccount.setLastLogin(System.currentTimeMillis());
 		userService.update(userAccount);
 		
+		session.setUserAccount(userAccount);
+		
 		status.setError(false);
 		
 		String redirectUrl = config.getAppUrl();
@@ -91,5 +94,12 @@ public class LoginController {
 		session.setWebsiteId(websiteId);
 		model.put("pageTitle", "Callback " + websiteId);
 		return "empty";
+	}
+	
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logout(ModelMap model) {
+		session.setUserAccount(null);
+		return "redirect:/";
 	}	
+	
 }

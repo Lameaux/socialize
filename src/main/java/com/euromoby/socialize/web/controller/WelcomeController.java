@@ -1,10 +1,12 @@
-package com.euromoby.socialize.web;
+package com.euromoby.socialize.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.euromoby.socialize.web.Session;
 
 @Controller
 public class WelcomeController {
@@ -15,6 +17,7 @@ public class WelcomeController {
     @RequestMapping("/")
     public String welcome(ModelMap model) {
     	model.put("pageTitle", "Welcome");
+    	model.put("session", session);
         return "welcome";
     }	
  

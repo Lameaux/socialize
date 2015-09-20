@@ -5,20 +5,20 @@
 	<form class="form" role="form" name="form" method="post" novalidate>
 	    <div class="form-group has-feedback">		 
 			<label for="displayName">Name</label> 
-			<input placeholder="John Smith" class="form-control" type="text" name="displayName" id="displayName" ng-model="user.displayName" ng-model-options="{ updateOn: 'blur' }" required minlength="3">
+			<input placeholder="Example: John Smith" class="form-control" type="text" name="displayName" id="displayName" ng-model="user.displayName" ng-model-options="{ updateOn: 'blur' }" required minlength="3">
 			<i class="glyphicon glyphicon-ok form-control-feedback" ng-show="form.displayName.$valid"></i>
 	    </div>
 		<span ng-show="form.$submitted || form.displayName.$touched">
-			<div class="alert alert-danger ng-cloak" ng-show="form.displayName.$error.required"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Please enter your name.</div>
+			<div class="alert alert-danger ng-cloak" ng-show="form.displayName.$error.required"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> This field is required.</div>
 			<div class="alert alert-danger ng-cloak" ng-show="form.displayName.$error.minlength"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Name should be at least 3 characters.</div>
 		</span>	
 		<div class="form-group has-feedback">
 			<label for="email">Email (required, but never shown)</label>
-			<input placeholder="john@example.com" class="form-control" type="email" name="email" id="email" ng-model="user.email" ng-model-options="{ updateOn: 'blur' }" required uniqueemail>
+			<input placeholder="Example: john@example.com" class="form-control" type="email" name="email" id="email" ng-model="user.email" ng-model-options="{ updateOn: 'blur' }" required uniqueemail>
 			<i class="glyphicon glyphicon-ok form-control-feedback" ng-show="form.email.$valid"></i>
 	    </div>
 		<span ng-show="form.$submitted || form.email.$touched">
-			<div class="alert alert-danger ng-cloak" ng-show="form.email.$error.required"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Please enter email.</div>
+			<div class="alert alert-danger ng-cloak" ng-show="form.email.$error.required"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> This field is required.</div>
 			<div class="alert alert-danger ng-cloak" ng-show="form.email.$error.email"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Email is not valid.</div>
 			<div class="alert alert-danger ng-cloak" ng-show="form.email.$error.uniqueemail"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> This email is already in use. Do you already have an account?</div>
 		</span>
@@ -28,7 +28,7 @@
 			<i class="glyphicon glyphicon-ok form-control-feedback" ng-show="form.password.$valid"></i>
 		</div>
 		<span ng-show="form.$submitted || form.password.$touched">
-			<div class="alert alert-danger ng-cloak" ng-show="form.password.$error.required"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Please enter password.</div>
+			<div class="alert alert-danger ng-cloak" ng-show="form.password.$error.required"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> This field is required.</div>
 			<div class="alert alert-danger ng-cloak" ng-show="form.password.$error.minlength"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Password should be at least 6 characters.</div>
 		</span>
 		<div class="form-group has-feedback">

@@ -1,0 +1,32 @@
+<div ng-app="app">
+<script src="/js/website-add.js"></script>
+<h1>Add Website</h1>
+<div ng-controller="WebsiteAddController">
+	<form class="form" role="form" name="form" method="post" novalidate>
+	    <div class="form-group has-feedback">		 
+			<label for="siteName">Site Name</label> 
+			<i class="glyphicon glyphicon-ok form-control-feedback" ng-show="form.siteName.$valid"></i>
+			<input placeholder="Example: John's Blog" class="form-control" type="text" name="siteName" id="siteName" ng-model="website.siteName" ng-model-options="{ updateOn: 'blur' }" required minlength="3">
+	    </div>
+		<span ng-show="form.$submitted || form.siteName.$touched">
+			<div class="alert alert-danger ng-cloak" ng-show="form.siteName.$error.required"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> This field is required.</div>
+			<div class="alert alert-danger ng-cloak" ng-show="form.siteName.$error.minlength"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Site name should be at least 3 characters.</div>
+		</span>	
+		<div class="form-group">
+			<label for="domain">Choose unique domain</label>
+			<div class="input-group has-feedback">
+				<input placeholder="Example: johnblog" class="form-control" type="text" name="domain" id="domain" ng-model="website.domain" ng-model-options="{ updateOn: 'blur' }" required minlength="4" validdomain uniquedomain>
+				<i class="glyphicon glyphicon-ok form-control-feedback" ng-show="form.domain.$valid"></i>
+				<span class="input-group-addon website-domain">.$appDomain</span>
+			</div>
+	    </div>
+		<span ng-show="form.$submitted || form.domain.$touched">
+			<div class="alert alert-danger ng-cloak" ng-show="form.domain.$error.required"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> This field is required.</div>
+			<div class="alert alert-danger ng-cloak" ng-show="form.domain.$error.minlength"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Domain should be at least 4 characters.</div>
+			<div class="alert alert-danger ng-cloak" ng-show="form.domain.$error.validdomain"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Domain is not valid. Please use letters, numbers, and hyphens only.</div>
+			<div class="alert alert-danger ng-cloak" ng-show="form.domain.$error.uniquedomain"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> This domain is already in use.</div>
+		</span>
+		<button class="btn btn-primary" type="submit" ng-click="addWebsite()">Add website</button>
+	</form>
+</div>
+</div>

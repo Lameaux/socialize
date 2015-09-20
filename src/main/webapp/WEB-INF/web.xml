@@ -16,7 +16,7 @@
 
 	<filter>
 	    <filter-name>nocache</filter-name>
-	    <filter-class>com.euromoby.socialize.web.NoCacheFilter</filter-class>
+	    <filter-class>com.euromoby.socialize.web.filter.NoCacheFilter</filter-class>
 	</filter>
 	<filter-mapping>
 	    <filter-name>nocache</filter-name>

@@ -7,8 +7,9 @@ public class Config {
 	private String httpUserAgent = DEFAULT_HTTP_USERAGENT;
 
 	private String appUrl;
+	private String appDomain;
 	private String appTitle;
-	
+
 	private int clientTimeout;
 	private String proxyHost;
 	private int proxyPort;
@@ -23,14 +24,20 @@ public class Config {
 	private String mailSenderName;
 	private String mailSenderAddress;
 
-	
-	
 	public String getAppUrl() {
 		return appUrl;
 	}
 
 	public void setAppUrl(String appUrl) {
 		this.appUrl = appUrl;
+	}
+
+	public String getAppDomain() {
+		return appDomain;
+	}
+
+	public void setAppDomain(String appDomain) {
+		this.appDomain = appDomain;
 	}
 
 	public String getAppTitle() {

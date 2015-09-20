@@ -1,22 +1,15 @@
-<br>
-<br>
-<br>
-<br>
-<br>
-<a href="/signup">Sign Up</a>
-<br>
-<br>
-<br>
-<a href="/signup?website=1">Sign Up As Website</a>
-<br>
-<br>
-<br>
-<a href="/login">Login</a>
-<br>
-<br>
-<br>
-<a href="/login?website=1">Login As Website</a>
-<br>
+<br><br><br><br>
+#if($session.userAccount)
+	Hello $session.userAccount.displayName (<a href="/logout">Logout</a>)
+	<br><br>
+	<a href="/add-website">Add Website</a>
+#else
+	<a class="btn btn-default" href="/signup">Sign Up</a>
+	<a class="btn btn-default" href="/login">Login</a>
+	<br><br>
+	<a class="btn btn-default" href="/signup?website=1">Sign Up As Website</a>
+	<a class="btn btn-default" href="/login?website=1">Login As Website</a>
+#end
 <br>
 <br>
 <br>

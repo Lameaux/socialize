@@ -1,4 +1,4 @@
-package com.euromoby.socialize.web;
+package com.euromoby.socialize.web.controller;
 
 import javax.validation.Valid;
 
@@ -20,6 +20,7 @@ import com.euromoby.socialize.core.model.MailNew;
 import com.euromoby.socialize.core.model.UserAccount;
 import com.euromoby.socialize.core.service.MailService;
 import com.euromoby.socialize.core.service.UserService;
+import com.euromoby.socialize.web.Session;
 import com.euromoby.socialize.web.dto.CheckEmailStatusDto;
 import com.euromoby.socialize.web.dto.CheckUserStatusDto;
 import com.euromoby.socialize.web.dto.SignupDto;

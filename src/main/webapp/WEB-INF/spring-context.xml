@@ -28,6 +28,7 @@
 		<property name="vkSecureKey" value="${vk.secure.key}" />
 		<property name="appTitle" value="${app.title}" />
 		<property name="appUrl" value="${app.url}" />
+		<property name="appDomain" value="${app.domain}" />
 		<property name="mailSenderName" value="${mail.sender.name}" />
 		<property name="mailSenderAddress" value="${mail.sender.address}" />
 	</bean>
@@ -64,6 +65,7 @@
 				<value>com.euromoby.socialize.core.model.MailNew</value>
 				<value>com.euromoby.socialize.core.model.MailSent</value>				
 				<value>com.euromoby.socialize.core.model.PasswordResetRequest</value>
+				<value>com.euromoby.socialize.core.model.Website</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

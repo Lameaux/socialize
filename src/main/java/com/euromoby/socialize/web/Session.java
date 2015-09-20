@@ -2,7 +2,7 @@ package com.euromoby.socialize.web;
 
 import java.io.Serializable;
 
-import com.euromoby.socialize.core.model.AuthUser;
+import com.euromoby.socialize.core.model.UserAccount;
 
 public class Session implements Serializable {
 
@@ -10,14 +10,14 @@ public class Session implements Serializable {
 
 	private Integer websiteId;
 
-	private AuthUser authUser;
+	private UserAccount userAccount = new UserAccount(); // TODO
 
-	public AuthUser getAuthUser() {
-		return authUser;
+	public UserAccount getUserAccount() {
+		return userAccount;
 	}
 
-	public void setAuthUser(AuthUser authUser) {
-		this.authUser = authUser;
+	public void setUserAccount(UserAccount userAccount) {
+		this.userAccount = userAccount;
 	}
 
 	public Integer getWebsiteId() {
