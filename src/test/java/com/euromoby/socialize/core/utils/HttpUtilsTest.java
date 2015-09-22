@@ -35,7 +35,6 @@ public class HttpUtilsTest {
 	
 	@Before
 	public void init() {
-		
 		Mockito.when(httpClientProvider.createRequestConfigBuilder()).thenReturn(RequestConfig.custom());
 	}	
 	
